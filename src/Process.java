@@ -64,7 +64,7 @@ public class Process extends Element {
 
     @Override
     public void doStatistics(double delta) {
-        meanQueue = getMeanQueue(delta) + queue * delta;
+        meanQueue += queue * delta;
 
         averageLoadSum += getState() * delta;
     }

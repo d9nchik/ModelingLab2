@@ -2,8 +2,8 @@ import java.util.ArrayList;
 
 public class SimModel {
     public static void main(String[] args) {
-        Create c = new Create(2.0);
-        Process p = new Process(1.0);
+        Create c = new Create(1.0);
+        Process p = new Process(3.0);
         System.out.println("id0 = " + c.getId() + " id1=" +
                 p.getId());
         c.setNextElement(p);
@@ -16,6 +16,6 @@ public class SimModel {
         list.add(c);
         list.add(p);
         Model model = new Model(list);
-        model.simulate(5);
+        model.simulate(1000);
     }
 }

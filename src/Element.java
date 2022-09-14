@@ -2,30 +2,17 @@ public class Element {
     private static int nextId = 0;
     private String name;
     private double tnext;
-    private double delayMean, delayDev;
+    private final double delayMean;
+    private final int id;
     private String distribution;
     private int quantity;
     private double tcurr;
     private int state;
     private Element nextElement;
-    private int id;
+    private double delayDeviation;
 
-
-    public Element() {
-
-        tnext = 0.0;
-        delayMean = 1.0;
-        distribution = "exp";
-        tcurr = tnext;
-        state = 0;
-        nextElement = null;
-        id = nextId;
-        nextId++;
-        name = "element" + id;
-    }
 
     public Element(double delay) {
-        name = "anonymus";
         tnext = 0.0;
         delayMean = delay;
         distribution = "";
@@ -37,52 +24,22 @@ public class Element {
         name = "element" + id;
     }
 
-    public Element(String nameOfElement, double delay) {
-        name = nameOfElement;
-        tnext = 0.0;
-        delayMean = delay;
-        distribution = "exp";
-        tcurr = tnext;
-        state = 0;
-        nextElement = null;
-        id = nextId;
-        nextId++;
-        name = "element" + id;
-    }
-
     public double getDelay() {
-        double delay = getDelayMean();
-        if ("exp".equalsIgnoreCase(getDistribution())) {
-            delay = FunRand.Exp(getDelayMean());
-        } else {
-            if ("norm".equalsIgnoreCase(getDistribution())) {
-                delay = FunRand.Norm(getDelayMean(), getDelayDev());
-            } else {
-                if ("unif".equalsIgnoreCase(getDistribution())) {
-                    delay = FunRand.Unif(getDelayMean(), getDelayDev());
-                } else {
-                    if ("".equalsIgnoreCase(getDistribution())) delay = getDelayMean();
-                }
-            }
-        }
-        return delay;
+        return switch (distribution) {
+            case "exp" -> FunRand.Exp(delayMean);
+            case "norm" -> FunRand.Norm(delayMean - delayDeviation * 0.5, delayMean + delayDeviation * 0.5);
+            case "unif" -> FunRand.Unif(delayMean, delayDeviation);
+            default -> delayMean;
+        };
     }
 
 
-    public double getDelayDev() {
-        return delayDev;
-    }
-
-    public void setDelayDev(double delayDev) {
-        this.delayDev = delayDev;
-    }
-
-    public String getDistribution() {
-        return distribution;
+    public void setDelayDeviation(double delayDev) {
+        this.delayDeviation = delayDev;
     }
 
     public void setDistribution(String distribution) {
-        this.distribution = distribution;
+        this.distribution = distribution.toLowerCase();
     }
 
     public int getQuantity() {
@@ -129,20 +86,8 @@ public class Element {
         this.tnext = tnext;
     }
 
-    public double getDelayMean() {
-        return delayMean;
-    }
-
-    public void setDelayMean(double delayMean) {
-        this.delayMean = delayMean;
-    }
-
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void printResult() {

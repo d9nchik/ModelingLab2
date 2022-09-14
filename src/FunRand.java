@@ -24,7 +24,7 @@ public class FunRand {
      *
      * @return a random value according to a uniform distribution
      */
-    public static double Uniform(double timeMin, double timeMax) {
+    public static double Unif(double timeMin, double timeMax) {
         double a = 0;
         while (a == 0) {
             a = Math.random();

@@ -99,7 +99,7 @@ public class Element {
     }
 
     public String getName() {
-        return name;
+        return name + " " + getId();
     }
 
     public void setName(String name) {

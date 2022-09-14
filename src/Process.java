@@ -31,10 +31,18 @@ public class Process extends Element {
         super.outAct();
         super.setTnext(Double.POSITIVE_INFINITY);
         super.setState(0);
+        callNextElement();
         if (getQueue() > 0) {
             setQueue(getQueue() - 1);
             super.setState(1);
             super.setTnext(super.getTcurr() + super.getDelay());
+        }
+    }
+
+    private void callNextElement() {
+        Element nextElement = super.getNextElement();
+        if (nextElement != null) {
+            nextElement.inAct();
         }
     }
 

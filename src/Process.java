@@ -5,6 +5,8 @@ public class Process extends Element {
 
     public Process(double delay) {
         super(delay);
+        super.setName("PROCESSOR");
+        super.setTnext(Double.POSITIVE_INFINITY);
         queue = 0;
         maxqueue = Integer.MAX_VALUE;
         meanQueue = 0.0;

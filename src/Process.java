@@ -1,6 +1,7 @@
 public class Process extends Element {
     private int queue, maxqueue, failure;
     private double meanQueue;
+    private double averageLoadSum;
 
     public Process(double delay) {
         super(delay);
@@ -63,10 +64,16 @@ public class Process extends Element {
 
     @Override
     public void doStatistics(double delta) {
-        meanQueue = getMeanQueue() + queue * delta;
+        meanQueue = getMeanQueue(delta) + queue * delta;
+
+        averageLoadSum += getState() * delta;
     }
 
-    public double getMeanQueue() {
-        return meanQueue;
+    public double getMeanQueue(double allTime) {
+        return meanQueue / allTime;
+    }
+
+    public double averageLoad(double allTime) {
+        return averageLoadSum / allTime;
     }
 }

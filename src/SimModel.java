@@ -2,32 +2,44 @@ import java.util.ArrayList;
 
 public class SimModel {
     public static void main(String[] args) {
-        Create c = new Create(1.0);
-        Process p1 = new Process(3.0);
-        Process p2 = new Process(5.0);
-        Process p3 = new Process(10.0);
+        double[] delayParameters = new double[]{1, 3, 5};
+        for (double cParameter : delayParameters) {
+            for (double p1Parameter : delayParameters) {
+                for (double p2Parameter : delayParameters) {
+                    for (double p3Parameter : delayParameters) {
+                        Element.resetNexId();
+                        System.out.printf("%d\t%d\t%d\t%d", (int) cParameter, (int) p1Parameter, (int) p2Parameter, (int) p3Parameter);
 
-        c.setNextElement(p1);
-        p1.setNextElement(p2);
-        p2.setNextElement(p3);
+                        Create c = new Create(cParameter);
+                        Process p1 = new Process(p1Parameter);
+                        Process p2 = new Process(p2Parameter);
+                        Process p3 = new Process(p3Parameter);
 
-        p1.setMaxqueue(5);
-        p2.setMaxqueue(5);
-        p3.setMaxqueue(5);
+                        c.setNextElement(p1);
+                        p1.setNextElement(p2);
+                        p2.setNextElement(p3);
 
-        c.setDistribution("exp");
-        p1.setDistribution("exp");
-        p2.setDistribution("exp");
-        p3.setDistribution("exp");
+                        p1.setMaxqueue(5);
+                        p2.setMaxqueue(5);
+                        p3.setMaxqueue(5);
 
-        ArrayList<Element> list = new ArrayList<>();
+                        c.setDistribution("exp");
+                        p1.setDistribution("exp");
+                        p2.setDistribution("exp");
+                        p3.setDistribution("exp");
 
-        list.add(c);
-        list.add(p1);
-        list.add(p2);
-        list.add(p3);
+                        ArrayList<Element> list = new ArrayList<>();
 
-        Model model = new Model(list);
-        model.simulate(1000);
+                        list.add(c);
+                        list.add(p1);
+                        list.add(p2);
+                        list.add(p3);
+
+                        Model model = new Model(list);
+                        model.simulate(1000);
+                    }
+                }
+            }
+        }
     }
 }

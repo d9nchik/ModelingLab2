@@ -12,6 +12,10 @@ public class Element {
     private double delayDeviation;
 
 
+    public static void resetNexId() {
+        nextId = 0;
+    }
+
     public Element(double delay) {
         tnext = 0.0;
         delayMean = delay;
@@ -33,10 +37,6 @@ public class Element {
         };
     }
 
-
-    public void setDelayDeviation(double delayDev) {
-        this.delayDeviation = delayDev;
-    }
 
     public void setDistribution(String distribution) {
         this.distribution = distribution.toLowerCase();
@@ -88,10 +88,6 @@ public class Element {
 
     public int getId() {
         return id;
-    }
-
-    public void printResult() {
-        System.out.println(getName() + " quantity = " + quantity);
     }
 
     public void printInfo() {

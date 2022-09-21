@@ -3,12 +3,11 @@ import java.util.ArrayList;
 public class Model {
     private final ArrayList<Element> list;
     double tnext, tcurr;
-    int event;
+    Element event;
 
     public Model(ArrayList<Element> elements) {
         list = elements;
         tnext = 0.0;
-        event = 0;
         tcurr = tnext;
     }
 
@@ -18,11 +17,11 @@ public class Model {
             for (Element e : list) {
                 if (e.getTnext() < tnext) {
                     tnext = e.getTnext();
-                    event = e.getId();
+                    event = e;
                 }
             }
             System.out.println("\nIt's time for event in " +
-                    list.get(event).getName() +
+                    event.getName() +
                     ", time = " + tnext);
             for (Element e : list) {
                 e.doStatistics(tnext - tcurr);
@@ -31,7 +30,7 @@ public class Model {
             for (Element e : list) {
                 e.setTcurr(tcurr);
             }
-            list.get(event).outAct();
+            event.outAct();
             for (Element e : list) {
                 if (e.getTnext() == tcurr) {
                     e.outAct();
@@ -58,6 +57,14 @@ public class Model {
                         + "\nfailure probability = " +
                         p.getFailure() / (double) p.getQuantity());
                 System.out.println("Average load = " + p.averageLoad(tcurr));
+            } else if (e instanceof MultipleProcesses mp) {
+                for (Process p : mp.getProcesses()) {
+                    System.out.println("Average load = " + p.averageLoad(tcurr));
+                }
+                System.out.println("failure probability = " + mp.getFailure() / (double) mp.getQuantity());
+
+                System.out.println("mean length of queue = " +
+                        mp.getMeanQueue(tcurr));
             }
         }
     }

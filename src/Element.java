@@ -71,11 +71,10 @@ public class Element {
     }
 
     public void inAct() {
-
+        quantity++;
     }
 
     public void outAct() {
-        quantity++;
     }
 
     public double getTnext() {

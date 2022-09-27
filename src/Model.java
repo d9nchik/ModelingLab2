@@ -30,7 +30,7 @@ public class Model {
             for (Element e : list) {
                 e.setTcurr(tcurr);
             }
-            event.outAct();
+
             for (Element e : list) {
                 if (e.getTnext() == tcurr) {
                     e.outAct();
@@ -53,18 +53,14 @@ public class Model {
             e.printResult();
             if (e instanceof Process p) {
                 System.out.println("mean length of queue = " +
-                        p.getMeanQueue(tcurr)
-                        + "\nfailure probability = " +
-                        p.getFailure() / (double) p.getQuantity());
+                        p.getMeanQueue(tcurr));
                 System.out.println("Average load = " + p.averageLoad(tcurr));
-            } else if (e instanceof MultipleProcesses mp) {
-                for (Process p : mp.getProcesses()) {
-                    System.out.println("Average load = " + p.averageLoad(tcurr));
-                }
-                System.out.println("failure probability = " + mp.getFailure() / (double) mp.getQuantity());
-
-                System.out.println("mean length of queue = " +
-                        mp.getMeanQueue(tcurr));
+            } else if (e instanceof CarSwitch cs) {
+                System.out.println("Mean clients in bank = " + cs.getMeanInBank(tcurr));
+                System.out.println("Leave interval = " + cs.getLeaveInterval());
+                System.out.println("Failure probability = " +
+                        cs.getFailure() / (double) cs.getQuantity());
+                System.out.println("Change cashier = " + cs.getChangeCashier());
             }
         }
     }

@@ -2,7 +2,7 @@ public class Element {
     private static int nextId = 0;
     private String name;
     private double tnext;
-    private final double delayMean;
+    private double delayMean;
     private final int id;
     private String distribution;
     private int quantity;
@@ -27,12 +27,15 @@ public class Element {
     public double getDelay() {
         return switch (distribution) {
             case "exp" -> FunRand.Exp(delayMean);
-            case "norm" -> FunRand.Norm(delayMean - delayDeviation * 0.5, delayMean + delayDeviation * 0.5);
-            case "unif" -> FunRand.Unif(delayMean, delayDeviation);
+            case "norm" -> FunRand.Norm(delayMean, delayDeviation);
+            case "unif" -> FunRand.Unif(delayMean - delayDeviation * 0.5, delayMean + delayDeviation * 0.5);
             default -> delayMean;
         };
     }
 
+    public void setDelayMean(double delayMean) {
+        this.delayMean = delayMean;
+    }
 
     public void setDelayDeviation(double delayDev) {
         this.delayDeviation = delayDev;

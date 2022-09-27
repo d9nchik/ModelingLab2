@@ -1,22 +1,19 @@
 import java.util.ArrayList;
 
 public class MultipleProcesses extends Element {
-    private final ArrayList<Process> processes = new ArrayList<>();
+    private final ArrayList<Process> processes;
     private int failure;
     private int queue, maxqueue;
     private double meanQueue;
 
-    public MultipleProcesses() {
+    public MultipleProcesses(ArrayList<Process> processes) {
         super(0);
+        this.processes = processes;
         super.setName("MULTI_PROCESSOR");
         super.setTnext(Double.POSITIVE_INFINITY);
         queue = 0;
         maxqueue = Integer.MAX_VALUE;
         meanQueue = 0.0;
-    }
-
-    public void addProcess(Process process) {
-        processes.add(process);
     }
 
     public ArrayList<Process> getProcesses() {

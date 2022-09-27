@@ -10,10 +10,12 @@ public class SimModel {
         Switch s = new Switch();
 
 
-        MultipleProcesses mp = new MultipleProcesses();
-        mp.addProcess(p1);
-        mp.addProcess(p2);
-        mp.addProcess(p3);
+        ArrayList<Process> processes = new ArrayList<>();
+        processes.add(p1);
+        processes.add(p2);
+        processes.add(p3);
+
+        MultipleProcesses mp = new MultipleProcesses(processes);
         mp.setNextElement(s);
 
         c.setNextElement(mp);

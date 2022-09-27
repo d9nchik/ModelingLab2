@@ -11,6 +11,8 @@ public class Switch extends Element {
     public void addElement(Element element, double possibility) {
         elements.add(element);
         possibilities.add(possibility);
+
+        this.check();
     }
 
     @Override
@@ -26,6 +28,24 @@ public class Switch extends Element {
             }
 
             rand -= currentPossibility;
+        }
+    }
+
+    private void check() {
+        if (this.elements.size() != this.possibilities.size()) {
+            throw new IllegalStateException("size of possibilities and elements mismatch");
+        }
+
+        double totalPossibility = 0;
+        for (Double possibility : possibilities) {
+            if (possibility <= 0) {
+                throw new IllegalArgumentException("possibility is equal or less than zero");
+            }
+            totalPossibility += possibility;
+        }
+
+        if (totalPossibility == 0 || totalPossibility > 1) {
+            throw new IllegalArgumentException("total possibility is more than zero");
         }
     }
 }

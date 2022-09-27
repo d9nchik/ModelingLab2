@@ -14,6 +14,7 @@ public class Process extends Element {
 
     @Override
     public void inAct() {
+        super.inAct();
         if (super.getState() == 0) {
             super.setState(1);
             super.setTnext(super.getTcurr() + super.getDelay());

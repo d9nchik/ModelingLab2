@@ -61,6 +61,7 @@ public class Model {
                 System.out.println("Failure probability = " +
                         cs.getFailure() / (double) cs.getQuantity());
                 System.out.println("Change cashier = " + cs.getChangeCashier());
+                System.out.println("Mean time in bank = " + cs.getMeanTimeInBank());
             }
         }
     }

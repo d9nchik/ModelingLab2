@@ -9,6 +9,9 @@ public class CarSwitch extends Element {
 
     private int changeCashier = 0;
 
+    private double waitInQueueTime = 0;
+    private double processTime = 0;
+
     public CarSwitch(Process cashier1, Process cashier2) {
         super(0);
         super.setName("CAR_SWITCH");
@@ -82,6 +85,9 @@ public class CarSwitch extends Element {
         super.doStatistics(delta);
 
         meanInBank += delta * (cashier1.getQueue() + cashier1.getState() + cashier2.getQueue() + cashier2.getState());
+
+        waitInQueueTime += delta * (cashier1.getQueue() + cashier2.getQueue());
+        processTime += delta * (cashier1.getState() + cashier2.getState());
     }
 
     public double getMeanInBank(double allTime) {
@@ -98,5 +104,17 @@ public class CarSwitch extends Element {
 
     public int getChangeCashier() {
         return changeCashier;
+    }
+
+    public double getMeanWaitInQueue() {
+        return waitInQueueTime / (cashier1.getQuantity() - cashier1.getFailure() + cashier2.getQuantity() - cashier2.getFailure());
+    }
+
+    public double getMeanProcessingTime() {
+        return processTime / (cashier1.getQuantity() - cashier1.getFailure() - cashier1.getQueue() + cashier2.getQuantity() - cashier2.getFailure() - cashier2.getQueue());
+    }
+
+    public double getMeanTimeInBank() {
+        return getMeanProcessingTime() + getMeanWaitInQueue();
     }
 }

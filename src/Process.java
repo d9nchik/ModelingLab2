@@ -60,6 +60,10 @@ public class Process extends Element {
         return maxqueue;
     }
 
+    public int getCurrentClientStatus() {
+        return currentClientStatus;
+    }
+
     public void setMaxqueue(int maxqueue) {
         this.maxqueue = maxqueue;
     }

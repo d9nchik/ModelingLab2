@@ -55,13 +55,6 @@ public class Model {
                 System.out.println("mean length of queue = " +
                         p.getMeanQueue(tcurr));
                 System.out.println("Average load = " + p.averageLoad(tcurr));
-            } else if (e instanceof CarSwitch cs) {
-                System.out.println("Mean clients in bank = " + cs.getMeanInBank(tcurr));
-                System.out.println("Leave interval = " + cs.getLeaveInterval());
-                System.out.println("Failure probability = " +
-                        cs.getFailure() / (double) cs.getQuantity());
-                System.out.println("Change cashier = " + cs.getChangeCashier());
-                System.out.println("Mean time in bank = " + cs.getMeanTimeInBank());
             }
         }
     }

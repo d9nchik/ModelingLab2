@@ -1,9 +1,13 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class MultipleProcesses extends Element {
     private final ArrayList<Process> processes;
     private int failure;
-    private int queue, maxqueue;
+
+    private final Queue<Integer> queue = new LinkedList<>();
+    private int maxqueue;
     private double meanQueue;
 
     public MultipleProcesses(ArrayList<Process> processes) {
@@ -11,7 +15,6 @@ public class MultipleProcesses extends Element {
         this.processes = processes;
         super.setName("MULTI_PROCESSOR");
         super.setTnext(Double.POSITIVE_INFINITY);
-        queue = 0;
         maxqueue = Integer.MAX_VALUE;
         meanQueue = 0.0;
     }
@@ -22,21 +25,21 @@ public class MultipleProcesses extends Element {
 
 
     @Override
-    public void inAct() {
-        super.inAct();
+    public void inAct(int clientStatus) {
+        super.inAct(clientStatus);
         if (super.getState() == 0) {
             super.setState(1);
         }
 
         for (Process process : processes) {
             if (process.getState() == 0) {
-                process.inAct();
+                process.inAct(clientStatus);
                 return;
             }
         }
 
-        if (getQueue() < getMaxqueue()) {
-            setQueue(getQueue() + 1);
+        if (queue.size() < getMaxqueue()) {
+            queue.add(clientStatus);
         } else {
             failure++;
         }
@@ -61,14 +64,6 @@ public class MultipleProcesses extends Element {
         return tnext;
     }
 
-    public int getQueue() {
-        return queue;
-    }
-
-    public void setQueue(int queue) {
-        this.queue = queue;
-    }
-
     public int getMaxqueue() {
         return maxqueue;
     }
@@ -87,9 +82,8 @@ public class MultipleProcesses extends Element {
             if (process.getTnext() == tnext) {
                 process.outAct();
 
-                if (queue > 0) {
-                    queue--;
-                    process.inAct();
+                if (!queue.isEmpty()) {
+                    process.inAct(queue.poll());
                 }
             }
         }
@@ -123,7 +117,7 @@ public class MultipleProcesses extends Element {
             process.doStatistics(delta);
         }
 
-        meanQueue += queue * delta;
+        meanQueue += queue.size() * delta;
     }
 
     public double getMeanQueue(double allTime) {

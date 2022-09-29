@@ -1,26 +1,31 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class Process extends Element {
-    private int queue, maxqueue, failure;
+    private final Queue<Integer> queue = new LinkedList<>();
+    private int maxqueue, failure;
     private double meanQueue;
     private double averageLoadSum;
+    private int currentClientStatus = 0;
 
     public Process(double delay) {
         super(delay);
         super.setName("PROCESSOR");
         super.setTnext(Double.POSITIVE_INFINITY);
-        queue = 0;
         maxqueue = Integer.MAX_VALUE;
         meanQueue = 0.0;
     }
 
     @Override
-    public void inAct() {
-        super.inAct();
+    public void inAct(int clientStatus) {
+        super.inAct(clientStatus);
         if (super.getState() == 0) {
             super.setState(1);
             super.setTnext(super.getTcurr() + super.getDelay());
+            currentClientStatus = clientStatus;
         } else {
-            if (getQueue() < getMaxqueue()) {
-                setQueue(getQueue() + 1);
+            if (queue.size() < getMaxqueue()) {
+                queue.add(clientStatus);
             } else {
                 failure++;
             }
@@ -33,8 +38,8 @@ public class Process extends Element {
         super.setTnext(Double.POSITIVE_INFINITY);
         super.setState(0);
         callNextElement();
-        if (getQueue() > 0) {
-            setQueue(getQueue() - 1);
+        if (!queue.isEmpty()) {
+            currentClientStatus = queue.poll();
             super.setState(1);
             super.setTnext(super.getTcurr() + super.getDelay());
         }
@@ -43,20 +48,12 @@ public class Process extends Element {
     private void callNextElement() {
         Element nextElement = super.getNextElement();
         if (nextElement != null) {
-            nextElement.inAct();
+            nextElement.inAct(currentClientStatus);
         }
     }
 
     public int getFailure() {
         return failure;
-    }
-
-    public int getQueue() {
-        return queue;
-    }
-
-    public void setQueue(int queue) {
-        this.queue = queue;
     }
 
     public int getMaxqueue() {
@@ -75,7 +72,7 @@ public class Process extends Element {
 
     @Override
     public void doStatistics(double delta) {
-        meanQueue += queue * delta;
+        meanQueue += queue.size() * delta;
 
         averageLoadSum += getState() * delta;
     }

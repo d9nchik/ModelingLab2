@@ -2,7 +2,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Process extends Element {
-    private final Queue<Integer> queue = new LinkedList<>();
+    protected Queue<Integer> queue = new LinkedList<>();
     private int maxqueue, failure;
     private double meanQueue;
     private double averageLoadSum;

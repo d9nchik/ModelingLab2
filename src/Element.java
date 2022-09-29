@@ -29,6 +29,7 @@ public class Element {
             case "exp" -> FunRand.Exp(delayMean);
             case "norm" -> FunRand.Norm(delayMean, delayDeviation);
             case "unif" -> FunRand.Unif(delayMean - delayDeviation * 0.5, delayMean + delayDeviation * 0.5);
+            case "erlang" -> FunRand.Erlang(delayMean, (int) delayDeviation);
             default -> delayMean;
         };
     }

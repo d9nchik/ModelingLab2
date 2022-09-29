@@ -47,4 +47,16 @@ public class FunRand {
         a = timeMean + timeDeviation * r.nextGaussian();
         return a;
     }
+
+    public static double Erlang(double timeMean, int k) {
+        double p = 1;
+        if (k <= 0) {
+            throw new IllegalArgumentException("erlang k is not positive");
+        }
+        for (int i = 0; i < k; i++) {
+            p *= Math.random();
+        }
+
+        return -Math.log(p) / timeMean;
+    }
 }

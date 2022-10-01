@@ -55,6 +55,10 @@ public class Model {
                 System.out.println("mean length of queue = " +
                         p.getMeanQueue(tcurr));
                 System.out.println("Average load = " + p.averageLoad(tcurr));
+            } else if (e instanceof MultipleProcesses mp) {
+                if (mp.getName().startsWith("LABORATORY")) {
+                    System.out.println("LABORATORY income interval = " + mp.getIncomeInterval());
+                }
             }
         }
     }

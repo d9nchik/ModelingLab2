@@ -12,6 +12,10 @@ public class MultipleProcesses extends Element {
 
     private boolean isInfoPrinted = true;
 
+    private double lastIncome = 0;
+    private double totalTimeIncomeElapsed = 0;
+    private int incomeCount = 0;
+
     public MultipleProcesses(ArrayList<Process> processes) {
         super(0);
         this.processes = processes;
@@ -33,6 +37,8 @@ public class MultipleProcesses extends Element {
             super.setState(1);
         }
 
+        calculateInterval();
+
         for (Process process : processes) {
             if (process.getState() == 0) {
                 process.inAct(clientStatus);
@@ -46,6 +52,15 @@ public class MultipleProcesses extends Element {
             failure++;
         }
     }
+
+    public void calculateInterval() {
+        if (lastIncome != 0) {
+            incomeCount++;
+            totalTimeIncomeElapsed += getTcurr() - lastIncome;
+        }
+        lastIncome = getTcurr();
+    }
+
 
     public double getTnext() {
         double tnext = Double.POSITIVE_INFINITY;
@@ -130,6 +145,10 @@ public class MultipleProcesses extends Element {
 
     public boolean isInfoPrinted() {
         return isInfoPrinted;
+    }
+
+    public double getIncomeInterval() {
+        return totalTimeIncomeElapsed / incomeCount;
     }
 
     public void setInfoPrinted(boolean infoPrinted) {

@@ -20,7 +20,9 @@ public class SwitchClientTypes extends Element {
     @Override
     public void inAct(int clientStatus) {
         super.inAct(clientStatus);
-
-        elements.get(clientStatus - 1).inAct(clientStatus);
+        Element element = elements.get(clientStatus - 1);
+        if (element != null) {
+            element.inAct(clientStatus);
+        }
     }
 }

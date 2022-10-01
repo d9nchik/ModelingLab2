@@ -6,7 +6,9 @@ public class SimModel {
 
         MultipleProcesses welcomeRoom = getWelcomeNurses();
         MultipleProcesses chamberRoom = getChamberNurses();
+
         MultipleProcesses corridorToRegistry = getCorridor();
+        corridorToRegistry.setName("CORRIDOR_TO_REGISTRY");
 
         Process registry = getRegistry();
         corridorToRegistry.setNextElement(registry);
@@ -14,8 +16,18 @@ public class SimModel {
         MultipleProcesses laboratory = getLaboratory();
         registry.setNextElement(laboratory);
 
-        SwitchClientTypes sct = new SwitchClientTypes(chamberRoom, corridorToRegistry, corridorToRegistry);
-        welcomeRoom.setNextElement(sct);
+        MultipleProcesses corridorToWelcomeRoom = getCorridor();
+        corridorToRegistry.setName("CORRIDOR_TO_REGISTRY");
+
+        SwitchClientTypes switchChamberRegistry = new SwitchClientTypes(chamberRoom, corridorToRegistry, corridorToRegistry);
+        welcomeRoom.setNextElement(switchChamberRegistry);
+
+        SwitchClientTypes switchLaboratory = new SwitchClientTypes(null, corridorToWelcomeRoom, null);
+        laboratory.setNextElement(switchLaboratory);
+
+        ChangeType changeType = new ChangeType(1);
+        changeType.setNextElement(welcomeRoom);
+        corridorToWelcomeRoom.setNextElement(changeType);
 
 
         c.setNextElement(welcomeRoom);
@@ -28,9 +40,10 @@ public class SimModel {
         list.add(corridorToRegistry);
         list.add(registry);
         list.add(laboratory);
+        list.add(corridorToWelcomeRoom);
 
         Model model = new Model(list);
-        model.simulate(100);
+        model.simulate(1000);
     }
 
     private static MultipleProcesses getWelcomeNurses() {
@@ -83,7 +96,6 @@ public class SimModel {
         }
 
         MultipleProcesses corridor = new MultipleProcesses(corridors);
-        corridor.setName("CORRIDOR_TO_REGISTRY");
         corridor.setInfoPrinted(false);
 
         return corridor;

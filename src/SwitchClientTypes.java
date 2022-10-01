@@ -8,6 +8,14 @@ public class SwitchClientTypes extends Element {
         this.elements = elements;
     }
 
+    public SwitchClientTypes(Element firstType, Element secondType, Element thirdType) {
+        super(0);
+        elements = new ArrayList<>();
+        elements.add(firstType);
+        elements.add(secondType);
+        elements.add(thirdType);
+    }
+
 
     @Override
     public void inAct(int clientStatus) {

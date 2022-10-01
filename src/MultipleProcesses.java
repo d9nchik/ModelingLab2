@@ -10,6 +10,8 @@ public class MultipleProcesses extends Element {
     private int maxqueue;
     private double meanQueue;
 
+    private boolean isInfoPrinted = true;
+
     public MultipleProcesses(ArrayList<Process> processes) {
         super(0);
         this.processes = processes;
@@ -106,8 +108,10 @@ public class MultipleProcesses extends Element {
     public void printInfo() {
         super.printInfo();
         System.out.println("failure = " + this.getFailure());
-        for (Process process : processes) {
-            process.printInfo();
+        if (isInfoPrinted) {
+            for (Process process : processes) {
+                process.printInfo();
+            }
         }
     }
 
@@ -122,6 +126,14 @@ public class MultipleProcesses extends Element {
 
     public double getMeanQueue(double allTime) {
         return meanQueue / allTime;
+    }
+
+    public boolean isInfoPrinted() {
+        return isInfoPrinted;
+    }
+
+    public void setInfoPrinted(boolean infoPrinted) {
+        isInfoPrinted = infoPrinted;
     }
 
     @Override

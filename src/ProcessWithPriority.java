@@ -12,6 +12,7 @@ public class ProcessWithPriority extends Process {
             case 3 -> setDelayMean(30);
             default -> throw new IllegalArgumentException("processWithPriority illegal");
         }
+        setDistribution("exp");
 
         return super.getDelay();
     }

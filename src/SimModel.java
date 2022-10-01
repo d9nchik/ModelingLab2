@@ -5,18 +5,14 @@ public class SimModel {
         Create c = new Create(15);
 
         MultipleProcesses welcomeRoom = getWelcomeNurses();
-        welcomeRoom.setName("WELCOME_ROOM");
-
         MultipleProcesses chamberRoom = getChamberNurses();
-        chamberRoom.setName("CHAMBER_ROOM");
-
         MultipleProcesses corridorToRegistry = getCorridor();
-        corridorToRegistry.setName("CORRIDOR_TO_REGISTRY");
-        corridorToRegistry.setInfoPrinted(false);
 
         Process registry = getRegistry();
-        registry.setName("REGISTRY");
         corridorToRegistry.setNextElement(registry);
+
+        MultipleProcesses laboratory = getLaboratory();
+        registry.setNextElement(laboratory);
 
         SwitchClientTypes sct = new SwitchClientTypes(chamberRoom, corridorToRegistry, corridorToRegistry);
         welcomeRoom.setNextElement(sct);
@@ -30,6 +26,8 @@ public class SimModel {
         list.add(welcomeRoom);
         list.add(chamberRoom);
         list.add(corridorToRegistry);
+        list.add(registry);
+        list.add(laboratory);
 
         Model model = new Model(list);
         model.simulate(100);
@@ -46,6 +44,7 @@ public class SimModel {
 
         MultipleProcessesWithPriority mpWithP = new MultipleProcessesWithPriority(doctors);
         mpWithP.setMaxqueue(Integer.MAX_VALUE);
+        mpWithP.setName("WELCOME_ROOM");
 
         return mpWithP;
     }
@@ -65,6 +64,8 @@ public class SimModel {
 
         MultipleProcesses mpChamberNurses = new MultipleProcesses(chamberNurses);
         mpChamberNurses.setMaxqueue(Integer.MAX_VALUE);
+        mpChamberNurses.setName("CHAMBER_ROOM");
+
         return mpChamberNurses;
     }
 
@@ -81,7 +82,11 @@ public class SimModel {
             corridors.add(corridor);
         }
 
-        return new MultipleProcesses(corridors);
+        MultipleProcesses corridor = new MultipleProcesses(corridors);
+        corridor.setName("CORRIDOR_TO_REGISTRY");
+        corridor.setInfoPrinted(false);
+
+        return corridor;
     }
 
     private static Process getRegistry() {
@@ -89,6 +94,24 @@ public class SimModel {
         registry.setDelayDeviation(3);
         registry.setDistribution("erlang");
         registry.setMaxqueue(Integer.MAX_VALUE);
+        registry.setName("REGISTRY");
         return registry;
+    }
+
+    private static MultipleProcesses getLaboratory() {
+        ArrayList<Process> laboratory = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Process laborant = new Process(4.5);
+            laborant.setDelayDeviation(3);
+            laborant.setDistribution("erlang");
+            laborant.setMaxqueue(Integer.MAX_VALUE);
+            laborant.setName("LABORANT");
+            laboratory.add(laborant);
+        }
+
+        MultipleProcesses laborratoryMP = new MultipleProcesses(laboratory);
+        laborratoryMP.setMaxqueue(Integer.MAX_VALUE);
+        laborratoryMP.setName("LABORATORY");
+        return laborratoryMP;
     }
 }

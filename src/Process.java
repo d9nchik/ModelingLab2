@@ -21,8 +21,8 @@ public class Process extends Element {
         super.inAct(clientStatus);
         if (super.getState() == 0) {
             super.setState(1);
-            super.setTnext(super.getTcurr() + super.getDelay());
             currentClientStatus = clientStatus;
+            super.setTnext(getTcurr() + getDelay());
         } else {
             if (queue.size() < getMaxqueue()) {
                 queue.add(clientStatus);

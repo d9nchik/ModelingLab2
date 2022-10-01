@@ -10,14 +10,15 @@ public class SimModel {
         doctors.add(p1);
         doctors.add(p2);
 
-        MultipleProcesses mp = new MultipleProcesses(doctors);
+        MultipleProcessesWithPriority mpWithP = new MultipleProcessesWithPriority(doctors);
+        mpWithP.setMaxqueue(Integer.MAX_VALUE);
 
-        c.setNextElement(mp);
+        c.setNextElement(mpWithP);
 
         ArrayList<Element> list = new ArrayList<>();
 
         list.add(c);
-        list.add(mp);
+        list.add(mpWithP);
 
         Model model = new Model(list);
         model.simulate(100);

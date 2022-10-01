@@ -6,7 +6,7 @@ public class MultipleProcesses extends Element {
     private final ArrayList<Process> processes;
     private int failure;
 
-    private final Queue<Integer> queue = new LinkedList<>();
+    protected Queue<Integer> queue = new LinkedList<>();
     private int maxqueue;
     private double meanQueue;
 

@@ -6,11 +6,17 @@ public class SimModel {
 
         MultipleProcesses welcomeRoom = getWelcomeNurses();
         welcomeRoom.setName("WELCOME_ROOM");
+
         MultipleProcesses chamberRoom = getChamberNurses();
         chamberRoom.setName("CHAMBER_ROOM");
+
         MultipleProcesses corridorToRegistry = getCorridor();
         corridorToRegistry.setName("CORRIDOR_TO_REGISTRY");
         corridorToRegistry.setInfoPrinted(false);
+
+        Process registry = getRegistry();
+        registry.setName("REGISTRY");
+        corridorToRegistry.setNextElement(registry);
 
         SwitchClientTypes sct = new SwitchClientTypes(chamberRoom, corridorToRegistry, corridorToRegistry);
         welcomeRoom.setNextElement(sct);
@@ -63,18 +69,26 @@ public class SimModel {
     }
 
     private static MultipleProcesses getCorridor() {
-        ArrayList<Process> chamberNurses = new ArrayList<>();
+        ArrayList<Process> corridors = new ArrayList<>();
         double start = 2.0;
         double end = 5.0;
         double deviation = (end - start) / 2;
         for (int i = 0; i < 10; i++) {
-            Process chamberNurse = new Process(end - deviation);
-            chamberNurse.setDistribution("unif");
-            chamberNurse.setDelayDeviation(deviation);
-            chamberNurse.setName("CORRIDOR");
-            chamberNurses.add(chamberNurse);
+            Process corridor = new Process(end - deviation);
+            corridor.setDistribution("unif");
+            corridor.setDelayDeviation(deviation);
+            corridor.setName("CORRIDOR");
+            corridors.add(corridor);
         }
 
-        return new MultipleProcesses(chamberNurses);
+        return new MultipleProcesses(corridors);
+    }
+
+    private static Process getRegistry() {
+        Process registry = new Process(4.5);
+        registry.setDelayDeviation(3);
+        registry.setDistribution("erlang");
+        registry.setMaxqueue(Integer.MAX_VALUE);
+        return registry;
     }
 }

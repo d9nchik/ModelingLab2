@@ -6,7 +6,7 @@ public class MultipleProcesses extends Element {
     private final ArrayList<Process> processes;
     private int failure;
 
-    protected Queue<Integer> queue = new LinkedList<>();
+    protected Queue<Client> queue = new LinkedList<>();
     private int maxqueue;
     private double meanQueue;
 
@@ -31,8 +31,8 @@ public class MultipleProcesses extends Element {
 
 
     @Override
-    public void inAct(int clientStatus) {
-        super.inAct(clientStatus);
+    public void inAct(Client client) {
+        super.inAct(client);
         if (super.getState() == 0) {
             super.setState(1);
         }
@@ -41,13 +41,13 @@ public class MultipleProcesses extends Element {
 
         for (Process process : processes) {
             if (process.getState() == 0) {
-                process.inAct(clientStatus);
+                process.inAct(client);
                 return;
             }
         }
 
         if (queue.size() < getMaxqueue()) {
-            queue.add(clientStatus);
+            queue.add(client);
         } else {
             failure++;
         }
@@ -122,6 +122,7 @@ public class MultipleProcesses extends Element {
     @Override
     public void printInfo() {
         super.printInfo();
+        getTnext();
         System.out.println("failure = " + this.getFailure());
         if (isInfoPrinted) {
             for (Process process : processes) {

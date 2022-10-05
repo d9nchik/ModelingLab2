@@ -59,6 +59,8 @@ public class Model {
                 if (mp.getName().startsWith("LABORATORY")) {
                     System.out.println("LABORATORY income interval = " + mp.getIncomeInterval());
                 }
+            } else if (e instanceof TimeInSystemCalculator tc) {
+                System.out.println("Client in system interval = " + tc.getClientInterval());
             }
         }
     }

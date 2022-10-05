@@ -74,7 +74,7 @@ public class Element {
         this.nextElement = nextElement;
     }
 
-    public void inAct(int clientStatus) {
+    public void inAct(Client client) {
         quantity++;
     }
 

@@ -17,12 +17,15 @@ public class SimModel {
         registry.setNextElement(laboratory);
 
         MultipleProcesses corridorToWelcomeRoom = getCorridor();
-        corridorToRegistry.setName("CORRIDOR_TO_REGISTRY");
+        corridorToRegistry.setName("CORRIDOR_TO_WELCOME_ROOM");
 
         SwitchClientTypes switchChamberRegistry = new SwitchClientTypes(chamberRoom, corridorToRegistry, corridorToRegistry);
         welcomeRoom.setNextElement(switchChamberRegistry);
 
-        SwitchClientTypes switchLaboratory = new SwitchClientTypes(null, corridorToWelcomeRoom, null);
+        TimeInSystemCalculator tc = new TimeInSystemCalculator();
+        chamberRoom.setNextElement(tc);
+
+        SwitchClientTypes switchLaboratory = new SwitchClientTypes(null, corridorToWelcomeRoom, tc);
         laboratory.setNextElement(switchLaboratory);
 
         ChangeType changeType = new ChangeType(1);
@@ -41,9 +44,10 @@ public class SimModel {
         list.add(registry);
         list.add(laboratory);
         list.add(corridorToWelcomeRoom);
+        list.add(tc);
 
         Model model = new Model(list);
-        model.simulate(1000);
+        model.simulate(10000);
     }
 
     private static MultipleProcesses getWelcomeNurses() {
@@ -112,7 +116,7 @@ public class SimModel {
 
     private static MultipleProcesses getLaboratory() {
         ArrayList<Process> laboratory = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 2; i++) {
             Process laborant = new Process(4.5);
             laborant.setDelayDeviation(3);
             laborant.setDistribution("erlang");

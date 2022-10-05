@@ -8,11 +8,11 @@ public class ChangeType extends Element {
     }
 
     @Override
-    public void inAct(int clientStatus) {
-        super.inAct(clientStatus);
+    public void inAct(Client client) {
+        super.inAct(client);
         Element nextElement = getNextElement();
         if (nextElement != null) {
-            nextElement.inAct(newType);
+            nextElement.inAct(new Client(newType, client.getEnterTime()));
         }
     }
 }

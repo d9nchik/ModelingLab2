@@ -6,10 +6,10 @@ public class MultipleProcessesWithPriority extends MultipleProcesses {
     public MultipleProcessesWithPriority(ArrayList<Process> processes) {
         super(processes);
         queue = new PriorityQueue<>((a, b) -> {
-            if (a == 1) {
+            if (a.getClientStatus() == 1) {
                 return -1;
             }
-            if (b == 1) {
+            if (b.getClientStatus() == 1) {
                 return 1;
             }
             return 0;

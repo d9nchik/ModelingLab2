@@ -2,11 +2,11 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Process extends Element {
-    protected Queue<Integer> queue = new LinkedList<>();
+    protected Queue<Client> queue = new LinkedList<>();
     private int maxqueue, failure;
     private double meanQueue;
     private double averageLoadSum;
-    private int currentClientStatus = 0;
+    private Client currentClient;
 
     public Process(double delay) {
         super(delay);
@@ -17,15 +17,15 @@ public class Process extends Element {
     }
 
     @Override
-    public void inAct(int clientStatus) {
-        super.inAct(clientStatus);
+    public void inAct(Client client) {
+        super.inAct(client);
         if (super.getState() == 0) {
             super.setState(1);
-            currentClientStatus = clientStatus;
+            currentClient = client;
             super.setTnext(getTcurr() + getDelay());
         } else {
             if (queue.size() < getMaxqueue()) {
-                queue.add(clientStatus);
+                queue.add(client);
             } else {
                 failure++;
             }
@@ -39,7 +39,7 @@ public class Process extends Element {
         super.setState(0);
         callNextElement();
         if (!queue.isEmpty()) {
-            currentClientStatus = queue.poll();
+            currentClient = queue.poll();
             super.setState(1);
             super.setTnext(super.getTcurr() + super.getDelay());
         }
@@ -48,7 +48,7 @@ public class Process extends Element {
     private void callNextElement() {
         Element nextElement = super.getNextElement();
         if (nextElement != null) {
-            nextElement.inAct(currentClientStatus);
+            nextElement.inAct(currentClient);
         }
     }
 
@@ -61,7 +61,7 @@ public class Process extends Element {
     }
 
     public int getCurrentClientStatus() {
-        return currentClientStatus;
+        return currentClient.getClientStatus();
     }
 
     public void setMaxqueue(int maxqueue) {

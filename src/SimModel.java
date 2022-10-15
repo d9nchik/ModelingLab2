@@ -3,8 +3,8 @@ import java.util.ArrayList;
 public class SimModel {
     public static void main(String[] args) {
         ArrayList<Element> list = getSMO(10);
-
         Model model = new Model(list);
+        model.setInfoPrinted(false);
         model.simulate(1000);
     }
 

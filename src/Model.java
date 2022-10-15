@@ -5,6 +5,8 @@ public class Model {
     double tnext, tcurr;
     Element event;
 
+    private boolean isInfoPrinted = true;
+
     public Model(ArrayList<Element> elements) {
         list = elements;
         tnext = 0.0;
@@ -20,9 +22,11 @@ public class Model {
                     event = e;
                 }
             }
-            System.out.println("\nIt's time for event in " +
-                    event.getName() +
-                    ", time = " + tnext);
+            if (isInfoPrinted) {
+                System.out.println("\nIt's time for event in " +
+                        event.getName() +
+                        ", time = " + tnext);
+            }
             for (Element e : list) {
                 e.doStatistics(tnext - tcurr);
             }
@@ -42,12 +46,18 @@ public class Model {
     }
 
     public void printInfo() {
+        if (!isInfoPrinted) {
+            return;
+        }
         for (Element e : list) {
             e.printInfo();
         }
     }
 
     public void printResult() {
+        if (!isInfoPrinted) {
+            return;
+        }
         System.out.println("\n-------------RESULTS-------------");
         for (Element e : list) {
             e.printResult();
@@ -67,5 +77,9 @@ public class Model {
                         mp.getMeanQueue(tcurr));
             }
         }
+    }
+
+    public void setInfoPrinted(boolean infoPrinted) {
+        isInfoPrinted = infoPrinted;
     }
 }

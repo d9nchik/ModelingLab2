@@ -33,13 +33,16 @@ public class SimModel {
     private static ArrayList<Element> getSMO(int N) {
         ArrayList<Element> list = new ArrayList<>();
 
-        Create c = new Create(5);
+        Create c = new Create(1.0 / N);
         list.add(c);
+
+        Switch s = new Switch();
+        c.setNextElement(s);
 
         for (int i = 0; i < N; i++) {
             Process p = new Process(5.0);
             p.setDistribution("exp");
-            list.get(list.size() - 1).setNextElement(p);
+            s.addElement(p, 1.0 / (N + 1));
             list.add(p);
         }
 

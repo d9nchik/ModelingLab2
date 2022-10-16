@@ -2,20 +2,31 @@ import java.util.ArrayList;
 
 public class SimModel {
     public static void main(String[] args) {
+        double simulationTime = 1000;
 
-        for (int i = 10000; i < 100000; i += 10000) {
+        for (int i = 100; i < 1100; i += 100) {
             ArrayList<Element> list = getSMO(i - 1);
 
             long startTime = System.currentTimeMillis();
 
             Model model = new Model(list);
             model.setInfoPrinted(false);
-            model.simulate(1000);
+            model.simulate(simulationTime);
 
             long endTime = System.currentTimeMillis();
 
             long duration = (endTime - startTime);
-            System.out.printf("%5d\t%d\n", i, duration);
+
+            double v = 0;
+            for (Element e : list) {
+                if (e instanceof Process p) {
+                    v += p.averageLoad(simulationTime) / p.getDelay();
+                } else if (e instanceof Create c) {
+                    v += 1 / c.getDelay();
+                }
+            }
+            System.out.printf("%5d\t%5f\t%d\n", i, v, duration);
+
         }
     }
 
